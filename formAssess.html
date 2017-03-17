@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <style type="text/css">
+      .box{
+          /*border: 1px solid red;*/
+      }
+      .hint {
+          color: gray;
+      }
+    </style>
+    
+</head>
+<body>
+     <div class="container">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="col-sm-12">
+                <h1>Baidu Front-end Test</h1>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                     <p style="padding:20px;"></p>
+            </div>
+            <div class="col-sm-12">
+              <form class="form-horizontal" id = "userForm" onsubmit="return ifValid()">
+                <div class="form-group">
+                    <label for="uName" class="col-xs-2 control-label">名称</label>
+                    <div class="col-xs-4">
+                      <input type="text" name="userName" id="uName" class="box form-control">
+                    </div>
+                    <div class="col-xs-2">
+                      <button type="submit" class="btn btn-primary" id="subButton">验证</button>
+                    </div>
+               </div>
+               <div class="form-group">
+                   <p id="info" class="col-xs-8 col-xs-offset-2 hint" >必填，长度为4～16个字符</p>
+
+               </div>
+            </form>
+            </div>
+        </div>
+            
+            
+       </div>
+        
+    </div>
+    
+    <script type="text/javascript">
+        var form = document.getElementById("userForm");
+        
+        function ifValid(e){
+            var form = document.getElementById("userForm");
+            var content = form.elements["userName"].value;
+            var input = document.getElementById("uName");
+            var info = document.getElementById("info")
+            var sheet = document.styleSheets[2];
+            var rules = sheet.cssRules || sheet.rules;
+            var boxR = rules[0];
+            var hintR = rules[1];
+            var len = getStrLen(content);
+            if(content === null || len ===0){
+                //input.className.add("has-error");
+                boxR.style.border = "1px solid red";
+                hintR.style.color = "red";
+                info.innerHTML = ("姓名不能为空");
+                return false;
+            }else if(len <4 || len>16){
+                boxR.style.border = "1px solid red";
+                hintR.style.color = "red";
+                info.innerHTML = ("长度为4～16个字符");
+                return false;
+            }else{
+                boxR.style.border = "1px solid green";
+                hintR.style.color = "green";
+                info.innerHTML = ("名称格式正确");
+               
+                return false;
+            }
+        }
+
+    function getStrLen (str){
+        var enLen = 0;
+        var zhLen = 0;
+        for (let ch of str) {
+            if (isASCII(ch))
+                enLen++;
+            else 
+                zhLen++;
+        } 
+        return enLen + zhLen * 2;  
+}
+
+function isASCII (c) {
+        return c.codePointAt(0) <= 0xFF;
+}
+
+    </script>
+
+</body>
+
+
+</html>
