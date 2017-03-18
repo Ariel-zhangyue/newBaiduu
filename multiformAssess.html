@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+   
+    
+</head>
+<body>
+     <div class="container">
+        <div class="row">
+           <div class="col-sm-10">
+            <div class="col-sm-12"><h1>Baidu Front-end Test</h1></div>
+            <div class="col-xs-12 col-sm-3"><p style="padding:20px;"></p></div>
+
+            <div class="col-sm-12">
+              <form class="form-horizontal" id = "userForm" onsubmit="return ifValid()">
+                <div class="form-group">
+                    <label for="userName" class="col-xs-2 control-label">名称</label>
+                    <div class="col-xs-4">
+                      <input type="text" name="userName" id="userName" class="form-control">
+                    </div>
+               </div>
+               <div class="form-group">
+                   <p id="user-info" class="col-xs-8 col-xs-offset-2" ></p>
+               </div>
+
+               <div class="form-group">
+                    <label for="password" class="col-xs-2 control-label">密码</label>
+                    <div class="col-xs-4">
+                      <input type="password" name="password" id="password" class="form-control">
+                    </div>
+               </div>
+               <div class="form-group">
+                   <p id="psw-info" class="col-xs-8 col-xs-offset-2" ></p>
+               </div>
+
+               <div class="form-group">
+                    <label for="re-password" class="col-xs-2 control-label">密码确认</label>
+                    <div class="col-xs-4">
+                      <input type="password" name="re-password" id="re-password" class="form-control">
+                    </div>
+               </div>
+               <div class="form-group">
+                   <p id="repsw-info" class="col-xs-8 col-xs-offset-2" ></p>
+               </div>
+
+               <div class="form-group">
+                    <label for="email" class="col-xs-2 control-label">邮箱</label>
+                    <div class="col-xs-4">
+                      <input type="email" name="email" id="email" class="form-control">
+                    </div>
+               </div>
+               <div class="form-group">
+                   <p id="email-info" class="col-xs-8 col-xs-offset-2" ></p>
+               </div>
+
+               <div class="form-group">
+                    <label for="tel" class="col-xs-2 control-label">手机</label>
+                    <div class="col-xs-4">
+                      <input type="text" name="tel" id="tel" class="form-control">
+                    </div>
+               </div>
+               <div class="form-group">
+                   <p id="tel-info" class="col-xs-8 col-xs-offset-2" ></p>
+               </div>
+
+                <div class="form-group">
+                    <div class="col-xs-2 col-xs-offset-6">
+                      <button type="submit" class="btn btn-primary" id="subButton"> 提交 </button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+            
+            
+       </div>
+        
+    </div>
+    
+    <script type="text/javascript">
+        var form = document.getElementById("userForm");
+        var formValid = true;
+        //var vuser = true, vpsw = true, vrepsw = true, vmail = true, vtel = true;
+        var vuser ,vpsw , vrepsw, vmail, vtel;
+        var info = {
+            user: "必填，长度为4～16个字符",
+            password: "输入密码",
+            repassword: "再次输入相同密码",
+            email: "输入有效邮箱",
+            tel: "输入常用手机号码"
+        };
+        var infoInvalid = {
+            user: "用户名不能为空",
+            password: "密码不能为空",
+            repassword: "输入密码不一致",
+            email: "邮箱格式错误",
+            tel: "手机格式错误"
+        };
+        var infoValid = {
+            user: "有效用户名",
+            password: "密码可用",
+            repassword: "密码输入一致",
+            email: "邮箱格式正确",
+            tel: "手机格式正确"
+        };
+        
+        //input area
+        var userInput = document.getElementById("userName");
+        var pswInput = document.getElementById("password");
+        var rePswInput = document.getElementById("re-password");
+        var emailInput = document.getElementById("email");
+        var telInput = document.getElementById("tel");
+        
+        //hint message
+        var userInfo = document.getElementById("user-info");
+        var pswInfo = document.getElementById("psw-info");
+        var rePswInfo = document.getElementById("repsw-info");
+        var emailInfo = document.getElementById("email-info");
+        var telInfo = document.getElementById("tel-info");
+
+    
+        userInput.addEventListener("focus", function(event){
+            target = event.target;
+            target.style.border = "1px solid gray";
+            userInfo.style.color = "gray";
+            userInfo.innerText = info.user;
+        },false);
+        userInput.addEventListener("blur", function(event){
+            var target = event.target;
+            var len = getStrLen(target.value);
+            if(target.value === null || len ===0){
+                target.style.border = "1px solid red";
+                userInfo.style.color = "red";
+                userInfo.innerText = infoInvalid.user;
+                vuser = false;
+            }else if(len <4 || len>16){
+                target.style.border = "1px solid red";
+                userInfo.style.color = "red";
+                userInfo.innerText = info.user;
+                vuser = false;
+            }else{
+                target.style.border = "1px solid green";
+                userInfo.style.color = "green";
+                userInfo.innerHTML = infoValid.user;
+                vuser = true;
+            }
+         },false);
+
+         pswInput.addEventListener("focus", function(event){
+            target = event.target;
+            target.style.border = "1px solid gray";
+            pswInfo.style.color = "gray";
+            pswInfo.innerText = info.password;
+        },false);
+        pswInput.addEventListener("blur", function(event){
+            var target = event.target;
+            var len = getStrLen(target.value);
+            if(target.value === null || len ===0){
+                target.style.border = "1px solid red";
+                pswInfo.style.color = "red";
+                pswInfo.innerText = infoInvalid.password;
+                vpsw = false;
+            }else{
+                target.style.border = "1px solid green";
+                pswInfo.style.color = "green";
+                pswInfo.innerHTML = infoValid.password;
+                vpsw = true;
+            }
+        },false);
+
+        rePswInput.addEventListener("focus", function(event){
+            target = event.target;
+            target.style.border = "1px solid gray";
+            rePswInfo.style.color = "gray";
+            rePswInfo.innerText = info.repassword;
+        },false);
+        rePswInput.addEventListener("blur", function(event){
+            var target = event.target;
+            if(target.value !== form.elements["password"].value){
+                target.style.border = "1px solid red";
+                rePswInfo.style.color = "red";
+                rePswInfo.innerText = infoInvalid.repassword;
+                vrepsw = false;
+            }else{
+                target.style.border = "1px solid green";
+                rePswInfo.style.color = "green";
+                rePswInfo.innerHTML = infoValid.repassword;
+                vrepsw = true;
+            }
+        },false);
+
+        emailInput.addEventListener("focus", function(event){
+            target = event.target;
+            target.style.border = "1px solid gray";
+            emailInfo.style.color = "gray";
+            emailInfo.innerText = info.email;
+        },false);
+        emailInput.addEventListener("blur", function(event){
+            var target = event.target;
+            if(!isEmail(target.value)){
+                target.style.border = "1px solid red";
+                emailInfo.style.color = "red";
+                emailInfo.innerText = infoInvalid.email;
+                vmail = false;
+            }else{
+                target.style.border = "1px solid green";
+                emailInfo.style.color = "green";
+                emailInfo.innerHTML = infoValid.email;
+                vmail = true;
+            }
+        },false);
+
+        telInput.addEventListener("focus", function(event){
+            target = event.target;
+            target.style.border = "1px solid gray";
+            telInfo.style.color = "gray";
+            tellInfo.innerText = info.tel;
+        },false);
+        telInput.addEventListener("blur", function(event){
+            var target = event.target;
+            if(!isPhone(target.value)){
+                target.style.border = "1px solid red";
+                telInfo.style.color = "red";
+                telInfo.innerText = infoInvalid.tel;
+                vtel = false;
+            }else{
+                target.style.border = "1px solid green";
+                telInfo.style.color = "green";
+                telInfo.innerHTML = infoValid.tel;
+                vtel = true;
+            }
+        },false);
+
+
+        function ifValid(){     
+            formValid = vuser && vpsw && vrepsw && vmail && vtel;
+            if(formValid) {
+                alert("输入正确 ！");
+                event.preventDefault();
+            }else{
+                alert("输入有误 ！");
+                return false;
+            }
+        }
+
+    function getStrLen (str){
+        var enLen = 0;
+        var zhLen = 0;
+        for (let ch of str) {
+            if (isASCII(ch))
+                enLen++;
+            else 
+                zhLen++;
+        } 
+        return enLen + zhLen * 2;  
+}
+
+function isASCII (c) {
+        return c.codePointAt(0) <= 0xFF;
+}
+
+function isEmail(str){ 
+    var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+    return reg.test(str); 
+}
+
+function isPhone(string) {  
+    var pattern = /^1[34578]\d{9}$/;  
+    return pattern.test(string);  
+};   
+
+    </script>
+
+</body>
+
+
+</html>
