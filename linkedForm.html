@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        #ins, #out{
+            display: none;
+        }
+        .container{
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+            background-color: pink;
+        }
+        .formEle{
+            position: absolute;
+            top: 50%;
+            height: 300px;
+            margin-top: -150px;
+        }
+        select{
+            width: 120px;
+        }
+        ＃sta{
+            margin: 20px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="formEle">
+            <form action="">
+                <div id="sta">
+                    <label><input type="radio" name="studyStatus" value="student" >在校生</label>
+                    <label><input type="radio" name="studyStatus" value="work">在职</label>
+                </div>
+                <div id="ins">
+                    <span>学校：</span><select name="area" id="area"></select>
+                    <select name="school" id="school"></select>
+                </div>
+                <div id="out">
+                    <label>就业单位：<input type="text" value=""></label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <script type="text/javascript">
+        var st=document.getElementById("sta"),
+            spart=document.getElementById("ins"),
+            wpart=document.getElementById("out");
+        st.addEventListener('click', function(e){
+            if(e.target.value=="student"){
+                spart.style.display="block";
+                wpart.style.display="none";
+            }else{
+                wpart.style.display="block";
+                spart.style.display="none";
+            }
+        }, false);
+
+        var areaData=[{code:0,value:"请选择"},
+                      {code:1, value:"北京"},
+                      {code:2, value:"上海"},
+                      {code:3, value:"香港"}];
+        var schoolData=[['请选择'],
+                        ['北京邮电大学','对外经贸大学','北京电影大学'],
+                        ['上海财经大学', '上海外国语大学'],
+                        ['香港科技大学','香港大学','香港中文大学']];
+        var area=document.getElementById("area"),school=document.getElementById("school");
+
+        render(area, areaData);
+        area.onchange = function(){
+            var _value=this.value;
+            render(school,schoolData[_value]);
+        }
+        function render(ele, data){
+            var ops=ele.querySelectorAll('option');
+            for(var i=0; i<ops.length; i++){
+                ele.removeChild(ops[i]);
+            }
+            var frag=document.createDocumentFragment();
+            for(var i=0; i<data.length; i++){
+                if(typeof data[0] === 'object') var opt=new Option(data[i].value,data[i].code);
+                else var opt=new Option(data[i], i);
+                frag.appendChild(opt);
+            }
+            ele.appendChild(frag);
+        }
+
+
+    </script>
+</body>
+</html>
